@@ -35,6 +35,14 @@ const bold = (s) => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 // the heading to body size, and <p><p>...</p></p>, which is invalid nesting.
 const inline = (md) => bold(esc(md.trim().replace(/\s*\n\s*/g, ' ')));
 
+// The marquee animates to translateX(-50%), so the list must be emitted twice
+// for the loop to be seamless. One copy visibly snaps at the wrap point.
+const marquee = (md) => {
+  const items = md.trim().split('·').map((s) => esc(s.trim())).filter(Boolean);
+  const run = items.map((i) => `<span>${i}</span>`).join('');
+  return run + run;
+};
+
 const raw = {};
 for (const f of readdirSync(join(root, 'content')).sort()) {
   if (!f.endsWith('.md')) continue;
@@ -44,17 +52,19 @@ for (const f of readdirSync(join(root, 'content')).sort()) {
 let html = readFileSync(join(root, 'template.html'), 'utf8');
 const used = new Set();
 
-html = html.replace(/<!--(content|inline):([a-z0-9-]+)-->/g, (m, mode, key) => {
+html = html.replace(/<!--(content|inline|marquee):([a-z0-9-]+)-->/g, (m, mode, key) => {
   if (!(key in raw)) {
     console.error(`FAIL: template references missing content file content/${key}.md`);
     process.exit(1);
   }
-  if (mode === 'inline' && /\n\s*\n/.test(raw[key].trim())) {
-    console.error(`FAIL: content/${key}.md has multiple blocks but is used as an inline token`);
+  if (mode !== 'content' && /\n\s*\n/.test(raw[key].trim())) {
+    console.error(`FAIL: content/${key}.md has multiple blocks but is used as a ${mode} token`);
     process.exit(1);
   }
   used.add(key);
-  return mode === 'inline' ? inline(raw[key]) : render(raw[key]);
+  if (mode === 'inline') return inline(raw[key]);
+  if (mode === 'marquee') return marquee(raw[key]);
+  return render(raw[key]);
 });
 
 const tokens = raw;

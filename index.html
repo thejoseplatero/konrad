@@ -14,113 +14,164 @@
     --hair:rgba(9,10,10,.14);
     --hair-light:rgba(255,255,255,.16);
     --face:InterVariable,Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    /* measured from konrad.com: one curve carries the whole site */
+    --ease:cubic-bezier(0.22,1,0.36,1);
+    --ease-alt:cubic-bezier(0.16,1,0.3,1);
+    --hover:0.12s;
+    --reveal:0.5s;
     --pad:24px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{
-    font-family:var(--face);
-    font-weight:400;
-    background:var(--ground);
-    color:var(--ink);
-    line-height:1.5;
-    letter-spacing:-.011em;
-    overflow-x:hidden;
+    font-family:var(--face);font-weight:400;
+    background:var(--ink);color:#fff;
+    line-height:1.5;letter-spacing:-.011em;overflow-x:hidden;
   }
-  .wrap{max-width:1120px;margin:0 auto;padding:0 var(--pad)}
-  section{padding:88px 0}
-  .dark{background:var(--ink);color:#fff}
-  .dark .num,.dark .lede{color:var(--white-dim)}
-  .light .num,.light .lede{color:var(--ink-dim)}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+  section{padding:104px 0}
+  .light{background:var(--ground);color:var(--ink)}
+  .light .lede,.light .num{color:var(--ink-dim)}
+  .dark .lede,.dark .num{color:var(--white-dim)}
 
-  h1{font-size:48px;font-weight:450;line-height:1.06;letter-spacing:-.03em}
-  h2{font-size:22px;font-weight:450;letter-spacing:-.02em;margin-bottom:28px}
+  h1{font-size:96px;font-weight:450;line-height:1.02;letter-spacing:-.03em}
+  h2{font-size:52px;font-weight:450;line-height:1.08;letter-spacing:-.03em;margin-bottom:32px}
   h3{font-size:16px;font-weight:550;letter-spacing:-.015em;margin-bottom:8px}
-  p{font-size:16px;margin-bottom:16px;max-width:62ch}
+  p{font-size:18px;margin-bottom:18px;max-width:64ch}
   p:last-child{margin-bottom:0}
   strong{font-weight:550}
 
-  /* nav */
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:24px 0;gap:16px}
-  .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
-  .brand svg{display:block;width:22px;height:22px}
-  .brand .nm{font-size:14px;font-weight:550;letter-spacing:-.028em}
+  /* uppercase kicker, 12px/550, straight from their site */
+  .kick{font-size:12px;font-weight:550;text-transform:uppercase;letter-spacing:.02em;display:block;margin-bottom:20px}
 
-  /* buttons */
+  /* nav, with the world-clock echo */
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:24px 0;gap:16px;position:relative;z-index:5}
+  .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+  .brand svg{display:block;width:22px;height:22px;transition:transform var(--hover) var(--ease)}
+  .brand:hover svg{transform:rotate(-90deg)}
+  .brand .nm{font-size:14px;font-weight:550;letter-spacing:-.028em}
+  .clock{font-size:12px;font-weight:400;letter-spacing:.5px;color:var(--white-dim);font-variant-numeric:tabular-nums}
+  @media (max-width:720px){.clock{display:none}}
+
   .btn{
     display:inline-block;border-radius:100px;padding:16px 24px;
     font-size:14px;font-weight:550;letter-spacing:-.028em;
     text-decoration:none;border:1px solid transparent;white-space:nowrap;
+    transition:background-color var(--hover) var(--ease),color var(--hover) var(--ease),transform var(--hover) var(--ease);
   }
+  .btn:hover{transform:translateY(-2px)}
   .btn-sm{padding:8px 16px}
   .btn-solid{background:#fff;color:var(--ink)}
   .btn-ghost{background:transparent;color:#fff;border-color:var(--hair-light)}
+  .btn-ghost:hover{background:rgba(255,255,255,.08)}
   .light .btn-solid{background:var(--ink);color:#fff}
-  .light .btn-ghost{color:var(--ink);border-color:var(--hair)}
-  .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
 
   /* hero */
-  .hero{background:var(--ink);color:#fff;padding-bottom:88px}
-  .eyebrow{font-size:13px;font-weight:450;letter-spacing:-.01em;color:var(--white-dim);margin-bottom:20px}
-  .hero h1{max-width:17ch;margin-bottom:24px}
-  .hero .dek{font-size:17px;color:var(--white-dim);max-width:60ch}
+  .hero{padding-bottom:0}
+  .eyebrow{font-size:13px;color:var(--white-dim);margin-bottom:24px}
+  .hero h1{max-width:15ch;margin-bottom:28px}
+  .hero .dek{font-size:20px;font-weight:500;letter-spacing:-.4px;color:var(--white-dim);max-width:58ch}
 
-  /* proof strip */
-  .proof{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair-light);margin-top:64px;border-top:1px solid var(--hair-light);border-bottom:1px solid var(--hair-light)}
-  .proof div{background:var(--ink);padding:24px 20px 24px 0}
-  .proof b{display:block;font-size:28px;font-weight:450;letter-spacing:-.03em;margin-bottom:4px}
-  .proof span{font-size:13px;color:var(--white-dim)}
+  /* full-bleed hero media band, their signature move */
+  .band{margin-top:80px;width:100%;height:min(62vh,620px);overflow:hidden;position:relative}
+  .band img{width:100%;height:100%;object-fit:cover;display:block;border-radius:0;
+            transform:scale(1.04);transition:transform 1.2s var(--ease)}
+  .band.in img{transform:scale(1)}
+
+  /* marquee, echoing their 60s logo loop */
+  .marquee{border-top:1px solid var(--hair-light);border-bottom:1px solid var(--hair-light);
+           overflow:hidden;padding:22px 0;white-space:nowrap;background:var(--ink)}
+  .marquee div{display:inline-block;animation:slide 42s linear infinite;font-size:12px;
+               font-weight:550;text-transform:uppercase;letter-spacing:.06em;color:var(--white-dim)}
+  .marquee span{padding-right:28px}
+  @keyframes slide{100%{transform:translateX(-50%)}}
 
   /* section head */
-  .shead{display:flex;gap:20px;align-items:baseline;margin-bottom:32px;border-top:1px solid var(--hair);padding-top:24px}
-  .dark .shead{border-color:var(--hair-light)}
-  .num{font-size:13px;font-weight:450;letter-spacing:.02em;min-width:28px}
+  .shead{display:flex;gap:24px;align-items:baseline;margin-bottom:40px;border-top:1px solid var(--hair-light);padding-top:28px}
+  .light .shead{border-color:var(--hair)}
+  .num{font-size:12px;font-weight:550;min-width:34px;letter-spacing:.02em}
   .shead h2{margin-bottom:0}
 
-  /* generic prose block */
-  .prose p{margin-bottom:18px}
+  /* split: prose beside an image */
+  .split{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+  .shot{overflow:hidden;position:relative;aspect-ratio:4/5;border-radius:0}
+  .shot img{width:100%;height:100%;object-fit:cover;display:block;
+            transition:transform 0.6s var(--ease),filter 0.28s}
+  .shot:hover img{transform:scale(1.05)}
+  .shot figcaption{font-size:12px;color:var(--white-dim);margin-top:12px;letter-spacing:-.01em}
+  .light .shot figcaption{color:var(--ink-dim)}
+
+  /* media wells: 4:5, sharp, poster swaps to video on hover */
+  .wells{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .well{position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--ink);border-radius:0;display:block;text-decoration:none;color:#fff}
+  .well img,.well video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+                        transition:transform 0.6s var(--ease),opacity 0.28s var(--ease)}
+  .well video{opacity:0}
+  .well:hover video{opacity:1}
+  .well:hover img{transform:scale(1.05)}
+  .well figcaption{position:absolute;left:0;right:0;bottom:0;padding:20px;
+                   background:linear-gradient(to top,rgba(9,10,10,.86),rgba(9,10,10,0));
+                   font-size:14px;font-weight:550;letter-spacing:-.28px;z-index:2}
+  .well .view{position:absolute;top:16px;left:16px;font-size:12px;font-weight:550;
+              text-transform:uppercase;letter-spacing:.02em;opacity:0;transform:translateY(-4px);
+              transition:opacity var(--hover) var(--ease),transform var(--hover) var(--ease);z-index:2}
+  .well:hover .view{opacity:1;transform:translateY(0)}
 
   /* assessment */
-  .buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-  .bucket{border-top:1px solid var(--hair-light);padding-top:20px}
-  .bucket .tag{font-size:13px;font-weight:550;letter-spacing:-.01em;margin-bottom:16px;display:block}
+  .buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+  .bucket{border-top:1px solid var(--hair-light);padding-top:22px}
+  .bucket .tag{font-size:12px;font-weight:550;text-transform:uppercase;letter-spacing:.02em;margin-bottom:18px;display:block}
   .bucket p{font-size:15px;margin-bottom:16px;max-width:none;color:var(--white-dim)}
   .bucket p strong{color:#fff;font-weight:550}
 
   /* letters */
-  .letters{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:8px}
-  .letter{border:1px solid var(--hair-light);border-radius:14px;padding:28px}
-  .letter blockquote{font-size:17px;letter-spacing:-.015em;margin-bottom:20px}
-  .letter cite{font-style:normal;font-size:13px;color:var(--white-dim);display:block;line-height:1.5}
+  .letters{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .letter{border:1px solid var(--hair-light);padding:32px;transition:border-color 0.28s var(--ease)}
+  .letter:hover{border-color:rgba(255,255,255,.34)}
+  .letter blockquote{font-size:20px;font-weight:450;letter-spacing:-.4px;line-height:1.4;margin-bottom:22px}
+  .letter cite{font-style:normal;font-size:13px;color:var(--white-dim);display:block;line-height:1.55}
   .letter cite b{display:block;color:#fff;font-weight:550;font-size:14px}
 
-  /* catalog */
-  .catalog{border:1px solid var(--hair);border-radius:14px;padding:40px}
+  .catalog{border:1px solid var(--hair);padding:48px}
 
-  footer{background:var(--ink);color:var(--white-dim);padding:48px 0;font-size:13px}
-  footer p{max-width:78ch;margin-bottom:10px;font-size:13px}
+  footer{color:var(--white-dim);padding:56px 0;font-size:13px;border-top:1px solid var(--hair-light)}
+  footer p{max-width:80ch;margin-bottom:10px;font-size:13px}
   footer a{color:#fff}
 
-  @media (max-width:860px){
-    .buckets{grid-template-columns:1fr;gap:28px}
+  /* scroll reveal, translateY like theirs */
+  .rv{opacity:0;transform:translateY(28px);
+      transition:opacity var(--reveal) var(--ease),transform var(--reveal) var(--ease)}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:980px){
+    h1{font-size:64px}
+    h2{font-size:38px}
+    .split{grid-template-columns:1fr;gap:32px}
+    .wells{grid-template-columns:1fr;gap:16px}
+    .buckets{grid-template-columns:1fr;gap:30px}
     .letters{grid-template-columns:1fr}
-    .proof{grid-template-columns:repeat(2,1fr)}
   }
   @media (max-width:560px){
     :root{--pad:20px}
-    section{padding:56px 0}
-    h1{font-size:34px}
-    .hero .dek{font-size:16px}
-    /* stacked pills sized to their own text read as ragged; match their widths */
+    section{padding:64px 0}
+    h1{font-size:42px}
+    h2{font-size:30px}
+    p{font-size:16px}
+    .hero .dek{font-size:17px}
     .btns{display:grid;grid-template-columns:1fr}
     .btns .btn{text-align:center}
-    .proof{grid-template-columns:1fr}
-    .proof div{padding:18px 0}
+    .band{height:52vh;margin-top:56px}
     .catalog{padding:28px}
-    .letter{padding:22px}
+    .letter{padding:24px}
   }
+  /* every effect above is opt-out */
   @media (prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .rv{opacity:1;transform:none}
+    .band img{transform:none}
+    .marquee div{animation:none}
   }
 </style>
 </head>
@@ -137,48 +188,58 @@
         </svg>
         <span class="nm">Jose Platero</span>
       </a>
+      <span class="clock">TOR <span id="tor">--:--</span></span>
       <a class="btn btn-sm btn-solid" href="mailto:joseplatero@gmail.com?subject=Senior%20Consultant%20application">Get in touch</a>
     </nav>
 
-    <div id="top" style="padding-top:72px">
-      <p class="eyebrow">Application · Senior Consultant · Toronto · Strategy</p>
-      <h1>You asked if I have taken a course at BrainStation. I teach three of them.</h1>
-      <p class="dek">Jose Platero, applying for Senior Consultant in Toronto. I lead product, design, and technology teams through large digital work, run the strategy and design thinking workshops myself, and build the AI systems underneath the delivery rather than talking about them.</p>
-      <div class="btns">
+    <div id="top" style="padding-top:80px">
+      <p class="eyebrow rv">Application · Senior Consultant · Toronto · Strategy</p>
+      <h1 class="rv">You asked if I have taken a course at BrainStation. I teach three of them.</h1>
+      <p class="dek rv">Jose Platero, applying for Senior Consultant in Toronto. I lead product, design, and technology teams through large digital work, run the strategy and design thinking workshops myself, and build the AI systems underneath the delivery rather than talking about them.</p>
+      <div class="btns rv">
         <a class="btn btn-solid" href="mailto:joseplatero@gmail.com?subject=Senior%20Consultant%20application">Start a conversation</a>
         <a class="btn btn-ghost" href="https://joseplatero.com" target="_blank" rel="noopener">See the full record</a>
       </div>
-      <div class="proof">
-        <div><b>45+</b><span>people across four practices</span></div>
-        <div><b>9M+</b><span>members moved to a new status program</span></div>
-        <div><b>Webby</b><span>Honoree, home experience rethink</span></div>
-        <div><b>3</b><span>BrainStation certifications taught</span></div>
-      </div>
     </div>
   </div>
+
+  <figure class="band rv">
+    <img src="https://joseplatero.com/assets/photos/pipeline-talk.jpg"
+         alt="Jose on stage teaching the Jira-to-executive-report pipeline, the full workflow illustrated on screen"
+         loading="eager" decoding="async">
+  </figure>
 </header>
 
-<section class="light">
-  <div class="wrap">
-    <div class="shead"><span class="num">01</span><h2>Who I am</h2></div>
-    <div class="prose"><p>I run a 45+ person organization across four practices at Air Canada, Aeroplan: product, design, marketing technology, and adtech. I own conversion, engagement, and activation across web and app for one of Canada's largest loyalty programs.</p>
-      <p>Before the client side I was Associate Partner at Nascent Digital, doing product and account strategy for DocuSign, TELUS, and Public Mobile, and a Product and Delivery Consultant at Rangle.io, coaching enterprise product teams at Raymond James and kiva.org. I know what the work looks like from inside a consultancy, and I know what it looks like from the seat that hires one.</p></div>
-  </div>
-</section>
+<div class="marquee" aria-hidden="true"><div><span>AIAI Toronto</span><span>DeveloperWeek</span><span>Product World</span><span>Product-Led Alliance</span><span>Aviation Festival Asia</span><span>Aviation Festival Americas</span><span>AI Product Summit</span><span>Elevate Toronto</span><span>BrainStation</span><span>Queen's Smith School of Business</span><span>ProductCamp BC</span><span>AIAI Toronto</span><span>DeveloperWeek</span><span>Product World</span><span>Product-Led Alliance</span><span>Aviation Festival Asia</span><span>Aviation Festival Americas</span><span>AI Product Summit</span><span>Elevate Toronto</span><span>BrainStation</span><span>Queen's Smith School of Business</span><span>ProductCamp BC</span></div></div>
 
 <section class="dark">
   <div class="wrap">
-    <div class="shead"><span class="num">02</span><h2>The role, read back</h2></div>
-    <div class="prose lede"><p>Read back from your posting, so we are working from the same text.</p>
+    <div class="shead rv"><span class="num">01</span><h2>Who I am</h2></div>
+    <div class="split">
+      <div class="rv"><p>I run a 45+ person organization across four practices at Air Canada, Aeroplan: product, design, marketing technology, and adtech. I own conversion, engagement, and activation across web and app for one of Canada's largest loyalty programs.</p>
+      <p>Before the client side I was Associate Partner at Nascent Digital, doing product and account strategy for DocuSign, TELUS, and Public Mobile, and a Product and Delivery Consultant at Rangle.io, coaching enterprise product teams at Raymond James and kiva.org. I know what the work looks like from inside a consultancy, and I know what it looks like from the seat that hires one.</p></div>
+      <figure class="shot rv">
+        <img src="https://joseplatero.com/assets/photos/panel-mic.jpg"
+             alt="Jose speaking on the Leaders in Design panel, co-panelists beside him"
+             loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="shead rv"><span class="num">02</span><h2>The role, read back</h2></div>
+    <div class="rv lede"><p>Read back from your posting, so we are working from the same text.</p>
       <p>You want someone who leads cross-functional teams of consultants, designers, and developers through medium and large digital projects. Who guides clients through the design thinking process, from early brainstorming through to technical delivery. Who runs the workshops. Who can be a design and technology thought leader on emerging trends. Who mentors the junior members of the team. And who can structure the presentations, documentation, and responses that carry the work.</p>
       <p>You listed public speaking as a qualification. That is the part most candidates cannot show you, so I have put the receipts in section 04.</p></div>
   </div>
 </section>
 
-<section class="light">
+<section class="dark">
   <div class="wrap">
-    <div class="shead"><span class="num">03</span><h2>What I would do</h2></div>
-    <div class="prose"><p><strong>Lead teams through large digital projects.</strong> I scaled a group to 45+ people across four practices and built the manager layer under it. Getting a new team to its operating baseline used to take a quarter. It now takes days.</p>
+    <div class="shead rv"><span class="num">03</span><h2>What I would do</h2></div>
+    <div class="rv"><p><strong>Lead teams through large digital projects.</strong> I scaled a group to 45+ people across four practices and built the manager layer under it. Getting a new team to its operating baseline used to take a quarter. It now takes days.</p>
       <p><strong>Run the strategy and design thinking workshops.</strong> I do this in front of paying audiences already, at BrainStation, at Queen's Smith School of Business, and at conferences in Toronto, San Jose, Miami, and Singapore.</p>
       <p><strong>Deliver through to implementation.</strong> I launched the Aeroplan member experience across web and app. Active membership doubled. Uber, Starbucks, and Marriott were added as earn and redeem partners. It won multiple Freddie Awards.</p>
       <p><strong>Bring AI into the delivery.</strong> I built the operating model where agents draft PRDs and user stories, prepare executive reporting, audit initiatives, and plan capacity. It is governed, repeatable, and used across my team. It replaced manual preparation instead of adding another tool.</p>
@@ -187,11 +248,47 @@
   </div>
 </section>
 
+<section class="dark" style="padding-top:0">
+  <div class="wrap">
+    <span class="kick rv">On the record</span>
+    <div class="rv lede" style="margin-bottom:36px"><p>Public speaking is on your qualifications list. Here is the footage.</p></div>
+    <div class="wells">
+      <a class="well rv" href="https://joseplatero.com" target="_blank" rel="noopener">
+        <img src="https://joseplatero.com/assets/posters/webby.jpg" alt="Webby Honoree talk" loading="lazy" decoding="async">
+        <video src="https://joseplatero.com/assets/talks/product-led-alliance-summit.mp4"
+               poster="https://joseplatero.com/assets/posters/webby.jpg"
+               muted loop playsinline preload="none" aria-hidden="true"></video>
+        <span class="view">View</span>
+        <figcaption>Webby Honoree</figcaption>
+      </a>
+      <!-- NOT the Design System Workshop clip: its poster has a Thoughtworks bag
+           and an Air Canada whiteboard in frame, and this page goes to a rival
+           consultancy. See design-notes.md, disclosure rules. -->
+      <a class="well rv" href="https://joseplatero.com" target="_blank" rel="noopener">
+        <img src="https://joseplatero.com/assets/posters/teaching.jpg" alt="Teaching Product Leadership" loading="lazy" decoding="async">
+        <video src="https://joseplatero.com/assets/behind-the-scenes/bts-2.mp4"
+               poster="https://joseplatero.com/assets/posters/teaching.jpg"
+               muted loop playsinline preload="none" aria-hidden="true"></video>
+        <span class="view">View</span>
+        <figcaption>Teaching Product Leadership</figcaption>
+      </a>
+      <a class="well rv" href="https://joseplatero.com" target="_blank" rel="noopener">
+        <img src="https://joseplatero.com/assets/posters/why-i-teach.jpg" alt="Student and Teacher" loading="lazy" decoding="async">
+        <video src="https://joseplatero.com/assets/talks/why-i-teach.mp4"
+               poster="https://joseplatero.com/assets/posters/why-i-teach.jpg"
+               muted loop playsinline preload="none" aria-hidden="true"></video>
+        <span class="view">View</span>
+        <figcaption>Student and Teacher</figcaption>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="dark">
   <div class="wrap">
-    <div class="shead"><span class="num">04</span><h2>Assessed against your qualifications</h2></div>
+    <div class="shead rv"><span class="num">04</span><h2>Assessed against your qualifications</h2></div>
     <div class="buckets">
-      <div class="bucket">
+      <div class="bucket rv">
         <span class="tag">Direct fit</span>
         <p><strong>Leading strategy, design, and technology teams.</strong> 45+ people across product, design, martech, and adtech. Design led across the full digital organization.</p>
       <p><strong>Medium and large scale digital projects.</strong> The Aeroplan relaunch, the aircanada.com home experience rethink, and the status program relaunch that moved 9M+ members to spend based earning.</p>
@@ -200,12 +297,12 @@
       <p><strong>Business and finance literacy.</strong> I own conversion and revenue growth across booking, upsell, ancillary, and loyalty flows, including co-brand credit offers on pages customers were already on.</p>
       <p><strong>Mentoring.</strong> BrainStation instructor. Queen's Smith industry advisor. Fractional and advisory work with Flashfood, VettedHealth, and Mission Talent.</p>
       </div>
-      <div class="bucket">
+      <div class="bucket rv">
         <span class="tag">Adjacent, not identical</span>
         <p><strong>Client relationships, from the other chair.</strong> My consultancy years at Nascent Digital and Rangle.io were client facing. Most of my recent client work is internal: executives, partners, and the transformation council, rather than a retained account.</p>
       <p><strong>Multiple industries.</strong> Travel, loyalty, telecom, media, and fintech through advisory work. That is depth in a few verticals. A full consulting career would put more of them on the table.</p>
       </div>
-      <div class="bucket">
+      <div class="bucket rv">
         <span class="tag">Flagged</span>
         <p><strong>Selling the work.</strong> You ask for request for proposal responses. I have bought consulting and run the vendor relationship from the client side. I have never carried a sales target or owned a response as the seller.</p>
       <p><strong>The shape of the seat.</strong> Your posting asks for four or more years and a role supporting the engagement lead. My recent years have been spent owning the organization. That is a different shape of job, and it is worth a direct conversation rather than a paragraph here.</p>
@@ -216,25 +313,33 @@
 
 <section class="light">
   <div class="wrap">
-    <div class="shead"><span class="num">05</span><h2>Your bonus question</h2></div>
-    <div class="prose"><p>Your posting closes with a bonus question:</p>
+    <div class="shead rv"><span class="num">05</span><h2>Your bonus question</h2></div>
+    <div class="split">
+      <div class="rv"><p>Your posting closes with a bonus question:</p>
       <blockquote>"Have you taken any courses at BrainStation? A lot of our design and development best practices and processes are taught during our courses."</blockquote>
       <p>I teach them.</p>
       <p>I am an instructor at BrainStation for the Artificial Intelligence Certification, the AI Product Management Certification, and the Product Leadership Certification, plus workshops in AI Agents, AI for Designers, and Rapid Prototyping with Figma Make. I have also presented on their stage as a featured speaker and sat on their Leaders in Design panel.</p>
       <p>So the best practices and processes in that question are ones I help write and deliver to the professionals who go on to work at firms like yours.</p></div>
+      <figure class="shot rv">
+        <img src="https://joseplatero.com/assets/photos/studio.jpg"
+             alt="Jose's teaching rig: three screens running a live BrainStation AI certification lab"
+             loading="lazy" decoding="async">
+        <figcaption>Jose's teaching rig: three screens running a live BrainStation AI certification lab</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
 <section class="dark">
   <div class="wrap">
-    <div class="shead"><span class="num">06</span><h2>Letters</h2></div>
-    <div class="prose lede"><p>Two of them, from people who sat in the room.</p></div>
+    <div class="shead rv"><span class="num">06</span><h2>Letters</h2></div>
+    <div class="rv lede" style="margin-bottom:36px"><p>Two of them, from people who sat in the room.</p></div>
     <div class="letters">
-      <div class="letter">
+      <div class="letter rv">
         <blockquote>"His ability to transform complex ideas into stories people can truly connect with... AI can become a practical thinking partner rather than just another tool."</blockquote>
         <cite><b>Beliz Kasirga</b>Data Operations &amp; Systems Analyst<br>AI Product Summit, BrainStation</cite>
       </div>
-      <div class="letter">
+      <div class="letter rv">
         <blockquote>"I went in expecting a breakdown of frameworks, tools, and product strategies. But instead, Jose focused on something far more foundational: People, culture change, and communication. And honestly? That hit deeper than expected."</blockquote>
         <cite><b>Hugo Cardoso</b>Business Systems Analyst<br>BrainStation talk, home experience rethink</cite>
       </div>
@@ -244,9 +349,9 @@
 
 <section class="light">
   <div class="wrap">
-    <div class="catalog">
-      <h2>joseplatero.com</h2>
-      <div class="prose"><p>This page is one application. The full record, the talks, the writing, and the systems I build in the open all live at joseplatero.com.</p></div>
+    <div class="catalog rv">
+      <h2 style="font-size:38px">joseplatero.com</h2>
+      <div><p>This page is one application. The full record, the talks, the writing, and the systems I build in the open all live at joseplatero.com.</p></div>
       <div class="btns">
         <a class="btn btn-solid" href="https://joseplatero.com" target="_blank" rel="noopener">Open the site</a>
       </div>
@@ -260,6 +365,47 @@
     <p><a href="mailto:joseplatero@gmail.com">joseplatero@gmail.com</a> · <a href="https://joseplatero.com" target="_blank" rel="noopener">joseplatero.com</a> · <a href="https://linkedin.com/in/joseplatero" target="_blank" rel="noopener">linkedin.com/in/joseplatero</a></p>
   </div>
 </footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    for (var i=0;i<els.length;i++) els[i].classList.add('in');
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    for (var j=0;j<els.length;j++) io.observe(els[j]);
+    // anything already on screen at load reveals immediately
+    setTimeout(function(){
+      for (var k=0;k<els.length;k++){
+        if (els[k].getBoundingClientRect().top < window.innerHeight) els[k].classList.add('in');
+      }
+    }, 60);
+  }
+
+  // hover plays the clip, leaving resets it. preload="none" keeps the page light.
+  document.querySelectorAll('.well').forEach(function(w){
+    var v = w.querySelector('video');
+    if (!v || reduce) return;
+    w.addEventListener('mouseenter', function(){ var p = v.play(); if (p && p.catch) p.catch(function(){}); });
+    w.addEventListener('mouseleave', function(){ v.pause(); v.currentTime = 0; });
+  });
+
+  // Toronto clock, the same beat as their office clocks
+  var t = document.getElementById('tor');
+  function tick(){
+    if (!t) return;
+    t.textContent = new Date().toLocaleTimeString('en-CA', {
+      timeZone:'America/Toronto', hour:'numeric', minute:'2-digit', hour12:true
+    });
+  }
+  tick(); setInterval(tick, 10000);
+})();
+</script>
 
 </body>
 </html>

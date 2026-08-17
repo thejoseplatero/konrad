@@ -177,6 +177,24 @@ page does something.
 No years-of-experience bragging. No hero stat reading "15 years". Outcomes and
 multipliers instead.
 
+### Media must be eyeballed, not just grepped
+
+A text check cannot see a logo inside a photograph. Every image used here was
+opened and looked at before shipping.
+
+**Rejected: `posters/workshop.jpg` and `behind-the-scenes/bts-1.mp4` ("Design
+System Workshop").** The frame contains a Thoughtworks-branded bag on the table
+and a whiteboard reading "Reserved for AIR CANADA". This page goes to a competing
+consultancy, so that is the exact disclosure the rule below forbids, arriving as
+a picture instead of a word. Replaced with "Teaching Product Leadership"
+(`posters/teaching.jpg` + `bts-2.mp4`), which is clean and shows BRAINSTATION on
+screen, reinforcing section 05. Both rejected files are banned by filename in
+`qa.mjs`.
+
+Cleared by eye: `pipeline-talk.jpg` (his own pipeline diagram on screen),
+`panel-mic.jpg`, `studio.jpg` (a BrainStation "Lab: Claude Skills" session),
+`webby.jpg` (the Air Canada homepage he shipped), `why-i-teach.jpg`.
+
 **Air Canada's external consulting partners (BCG, Thoughtworks) are never named.**
 They appear on the private CV. This page goes to an external consultancy and
 naming them here would be a disclosure problem. Encoded as a failing QA test.

@@ -60,7 +60,7 @@ ok('no <p> nested inside a <p>',
   innerOf('p').every((s) => !/<p(?=[\s>])/.test(s)),
   innerOf('p').find((s) => /<p(?=[\s>])/.test(s))?.slice(0, 60) || '');
 ok('hero headline carries real text, not an empty shell',
-  /<h1>[^<]{20,}<\/h1>/.test(html));
+  /<h1[^>]*>[^<]{20,}<\/h1>/.test(html));
 
 /* ---------- 3. CSS integrity ---------- */
 ok('css braces balanced',
@@ -113,11 +113,20 @@ for (const name of ['Thoughtworks', 'BCG', 'Boston Consulting']) {
   ok(`"${name}" never named on a page sent to an external consultancy`,
     !new RegExp(name, 'i').test(visible));
 }
+// A text scan cannot see a logo baked into a JPEG. Caught by eye at review:
+// posters/workshop.jpg has a Thoughtworks bag and an Air Canada whiteboard in
+// frame. Any media carrying third-party branding is banned by filename here.
+for (const asset of ['posters/workshop.jpg', 'behind-the-scenes/bts-1.mp4']) {
+  ok(`"${asset}" not used (third-party branding visible in frame)`,
+    !html.includes(asset));
+}
+ok('every referenced image was eyeballed for in-frame branding',
+  /eyeballed|Thoughtworks bag/.test(readFileSync(join(root, 'design-notes.md'), 'utf8')));
 
 /* ---------- 8. quotes are real and attributed ---------- */
 ok('Beliz Kasirga quote attributed', /Beliz Kasirga/.test(visible) && /AI Product Summit, BrainStation/.test(visible));
 ok('Hugo Cardoso quote attributed', /Hugo Cardoso/.test(visible) && /Business Systems Analyst/.test(visible));
-ok('two letters exactly', (html.match(/class="letter"/g) || []).length === 2);
+ok('two letters exactly', (html.match(/class="letter(?:\s[^"]*)?"/g) || []).length === 2);
 
 /* ---------- 9. a11y and responsive ---------- */
 const targetBlank = [...html.matchAll(/<a[^>]*target="_blank"[^>]*>/g)].map((m) => m[0]);
@@ -127,8 +136,45 @@ ok('reduced-motion honoured', /prefers-reduced-motion:\s*reduce/.test(css));
 ok('svg mark has accessible label', /role="img"\s+aria-label="[^"]+"/.test(html));
 ok('viewport meta present', /name="viewport"/.test(html));
 ok('mobile breakpoint present', /@media\s*\(max-width:\s*560px\)/.test(css));
-ok('tablet breakpoint present', /@media\s*\(max-width:\s*860px\)/.test(css));
+ok('tablet breakpoint present', /@media\s*\(max-width:\s*980px\)/.test(css));
 ok('horizontal overflow guarded', /overflow-x:\s*hidden/.test(css));
+
+/* ---------- 9b. delight level, measured against the pass-2 scan ---------- */
+// A page built from the posting page alone shipped once with zero motion and
+// zero media. These checks make that impossible to repeat.
+ok('signature easing curve present', /cubic-bezier\(0\.22\s*,\s*1\s*,\s*0\.36\s*,\s*1\)/.test(css));
+ok('signature curve is the dominant one',
+  (css.match(/var\(--ease\)/g) || []).length >= 8,
+  `${(css.match(/var\(--ease\)/g) || []).length} uses`);
+ok('hover duration matches their 0.12s', /--hover:\s*0\.12s/.test(css));
+ok('card media hover uses their 0.6s transform', /transform 0\.6s var\(--ease\)/.test(css));
+ok('scroll reveal pattern present', /\.rv\{[\s\S]{0,120}translateY/.test(css) && /IntersectionObserver/.test(html));
+ok('ambient loop present (marquee)', /@keyframes slide/.test(css) && /class="marquee"/.test(html));
+ok('display heading is at their scale, not the posting page 48px', /h1\{font-size:96px/.test(css));
+
+const media = [...html.matchAll(/(?:src|poster)="(https:\/\/joseplatero\.com\/assets\/[^"]+)"/g)].map((m) => m[1]);
+ok('page carries real media', media.length >= 6, `${media.length} refs`);
+ok('media streams from joseplatero.com, never copied into the repo', !existsSync(join(root, 'assets')));
+ok('no reference to the two assets that 404 live', !/aiai-toronto\.mp4|elevate\.mp4/.test(html));
+const videos = [...html.matchAll(/<video[^>]*>/g)].map((m) => m[0]);
+ok('every video has a poster', videos.length > 0 && videos.every((v) => /poster="/.test(v)));
+ok('every video is muted, looped and inline',
+  videos.every((v) => /muted/.test(v) && /loop/.test(v) && /playsinline/.test(v)));
+ok('videos do not preload (hover-triggered)', videos.every((v) => /preload="none"/.test(v)));
+ok('media wells are fixed 4:5, matching their case cards',
+  (css.match(/aspect-ratio:4\/5/g) || []).length >= 2);
+ok('media corners stay sharp while buttons stay pills',
+  /\.well\{[^}]*border-radius:0/.test(css) && /border-radius:100px/.test(css));
+for (const label of ['Webby Honoree', 'Teaching Product Leadership', 'Student and Teacher']) {
+  ok(`caption "${label}" is verbatim from the asset manifest`, visible.includes(label));
+}
+ok('images carry real alt text', [...html.matchAll(/<img[^>]*>/g)].every((m) => /alt="[^"]{8,}"/.test(m[0])));
+ok('reduced-motion kills animations',
+  /prefers-reduced-motion:\s*reduce/.test(css) && /animation:none!important/.test(css));
+ok('reduced-motion reveals content rather than hiding it',
+  /prefers-reduced-motion[\s\S]*?\.rv\{opacity:1/.test(css));
+ok('reveal script has a reduced-motion branch', /prefers-reduced-motion: reduce/.test(html));
+ok('reveal script has a no-IntersectionObserver fallback', /IntersectionObserver' in window/.test(html));
 
 /* ---------- 10. mark is custom to this company ---------- */
 // The Thomson Reuters build once shipped with the Affirm arc pasted in unchanged.
