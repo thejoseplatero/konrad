@@ -1,0 +1,49 @@
+name: Deploy to joseplatero.com/konrad
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # index.html is generated. Rebuild and confirm the committed copy matches,
+      # then gate the deploy on the full QA suite.
+      - name: Build is reproducible
+        run: |
+          node scripts/build.mjs
+          git diff --exit-code index.html
+      - name: QA
+        run: node scripts/qa.mjs
+
+  deploy:
+    needs: qa
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same FTP secrets as the story repo, configured separately here
+      # (GitHub Actions secrets do not cross repos): FTP_SERVER, FTP_USERNAME, FTP_PASSWORD.
+      - name: Sync to joseplatero.com/konrad
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          server-dir: /public_html/joseplatero.com/konrad/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            README.md
+            design-notes.md
+            content/**
+            scripts/**
+            template.html
