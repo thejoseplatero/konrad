@@ -1,0 +1,1 @@
+Jose Platero, applying for Senior Consultant in Toronto. I lead product, design, and technology teams through large digital work, run the strategy and design thinking workshops myself, and build the AI systems underneath the delivery rather than talking about them.

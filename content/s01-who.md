@@ -1,0 +1,3 @@
+I run a 45+ person organization across four practices at Air Canada, Aeroplan: product, design, marketing technology, and adtech. I own conversion, engagement, and activation across web and app for one of Canada's largest loyalty programs.
+
+Before the client side I was Associate Partner at Nascent Digital, doing product and account strategy for DocuSign, TELUS, and Public Mobile, and a Product and Delivery Consultant at Rangle.io, coaching enterprise product teams at Raymond James and kiva.org. I know what the work looks like from inside a consultancy, and I know what it looks like from the seat that hires one.

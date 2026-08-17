@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Jose Platero · Senior Consultant, Konrad Toronto</title>
+<style>
+  :root{
+    --ink:#090a0a;
+    --ground:#ffffff;
+    --ink-dim:rgba(9,10,10,.62);
+    --white-dim:rgba(255,255,255,.62);
+    --hair:rgba(9,10,10,.14);
+    --hair-light:rgba(255,255,255,.16);
+    --face:InterVariable,Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --pad:24px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--face);
+    font-weight:400;
+    background:var(--ground);
+    color:var(--ink);
+    line-height:1.5;
+    letter-spacing:-.011em;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 var(--pad)}
+  section{padding:88px 0}
+  .dark{background:var(--ink);color:#fff}
+  .dark .num,.dark .lede{color:var(--white-dim)}
+  .light .num,.light .lede{color:var(--ink-dim)}
+
+  h1{font-size:48px;font-weight:450;line-height:1.06;letter-spacing:-.03em}
+  h2{font-size:22px;font-weight:450;letter-spacing:-.02em;margin-bottom:28px}
+  h3{font-size:16px;font-weight:550;letter-spacing:-.015em;margin-bottom:8px}
+  p{font-size:16px;margin-bottom:16px;max-width:62ch}
+  p:last-child{margin-bottom:0}
+  strong{font-weight:550}
+
+  /* nav */
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:24px 0;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+  .brand svg{display:block;width:22px;height:22px}
+  .brand .nm{font-size:14px;font-weight:550;letter-spacing:-.028em}
+
+  /* buttons */
+  .btn{
+    display:inline-block;border-radius:100px;padding:16px 24px;
+    font-size:14px;font-weight:550;letter-spacing:-.028em;
+    text-decoration:none;border:1px solid transparent;white-space:nowrap;
+  }
+  .btn-sm{padding:8px 16px}
+  .btn-solid{background:#fff;color:var(--ink)}
+  .btn-ghost{background:transparent;color:#fff;border-color:var(--hair-light)}
+  .light .btn-solid{background:var(--ink);color:#fff}
+  .light .btn-ghost{color:var(--ink);border-color:var(--hair)}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+
+  /* hero */
+  .hero{background:var(--ink);color:#fff;padding-bottom:88px}
+  .eyebrow{font-size:13px;font-weight:450;letter-spacing:-.01em;color:var(--white-dim);margin-bottom:20px}
+  .hero h1{max-width:17ch;margin-bottom:24px}
+  .hero .dek{font-size:17px;color:var(--white-dim);max-width:60ch}
+
+  /* proof strip */
+  .proof{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair-light);margin-top:64px;border-top:1px solid var(--hair-light);border-bottom:1px solid var(--hair-light)}
+  .proof div{background:var(--ink);padding:24px 20px 24px 0}
+  .proof b{display:block;font-size:28px;font-weight:450;letter-spacing:-.03em;margin-bottom:4px}
+  .proof span{font-size:13px;color:var(--white-dim)}
+
+  /* section head */
+  .shead{display:flex;gap:20px;align-items:baseline;margin-bottom:32px;border-top:1px solid var(--hair);padding-top:24px}
+  .dark .shead{border-color:var(--hair-light)}
+  .num{font-size:13px;font-weight:450;letter-spacing:.02em;min-width:28px}
+  .shead h2{margin-bottom:0}
+
+  /* generic prose block */
+  .prose p{margin-bottom:18px}
+
+  /* assessment */
+  .buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .bucket{border-top:1px solid var(--hair-light);padding-top:20px}
+  .bucket .tag{font-size:13px;font-weight:550;letter-spacing:-.01em;margin-bottom:16px;display:block}
+  .bucket p{font-size:15px;margin-bottom:16px;max-width:none;color:var(--white-dim)}
+  .bucket p strong{color:#fff;font-weight:550}
+
+  /* letters */
+  .letters{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:8px}
+  .letter{border:1px solid var(--hair-light);border-radius:14px;padding:28px}
+  .letter blockquote{font-size:17px;letter-spacing:-.015em;margin-bottom:20px}
+  .letter cite{font-style:normal;font-size:13px;color:var(--white-dim);display:block;line-height:1.5}
+  .letter cite b{display:block;color:#fff;font-weight:550;font-size:14px}
+
+  /* catalog */
+  .catalog{border:1px solid var(--hair);border-radius:14px;padding:40px}
+
+  footer{background:var(--ink);color:var(--white-dim);padding:48px 0;font-size:13px}
+  footer p{max-width:78ch;margin-bottom:10px;font-size:13px}
+  footer a{color:#fff}
+
+  @media (max-width:860px){
+    .buckets{grid-template-columns:1fr;gap:28px}
+    .letters{grid-template-columns:1fr}
+    .proof{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:560px){
+    :root{--pad:20px}
+    section{padding:56px 0}
+    h1{font-size:34px}
+    .hero .dek{font-size:16px}
+    /* stacked pills sized to their own text read as ragged; match their widths */
+    .btns{display:grid;grid-template-columns:1fr}
+    .btns .btn{text-align:center}
+    .proof{grid-template-columns:1fr}
+    .proof div{padding:18px 0}
+    .catalog{padding:28px}
+    .letter{padding:22px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Jose Platero">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24 0V6.32L15.16 15.16L6.32 24H0L12 12L24 0Z"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24 24H15.16L19.58 19.58L24 15.16V24Z"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M15.16 0L8.53 6.32L1.9 0H15.16Z"></path>
+        </svg>
+        <span class="nm">Jose Platero</span>
+      </a>
+      <a class="btn btn-sm btn-solid" href="mailto:joseplatero@gmail.com?subject=Senior%20Consultant%20application">Get in touch</a>
+    </nav>
+
+    <div id="top" style="padding-top:72px">
+      <p class="eyebrow">Application · Senior Consultant · Toronto · Strategy</p>
+      <h1><!--inline:hero--></h1>
+      <p class="dek"><!--inline:hero-dek--></p>
+      <div class="btns">
+        <a class="btn btn-solid" href="mailto:joseplatero@gmail.com?subject=Senior%20Consultant%20application">Start a conversation</a>
+        <a class="btn btn-ghost" href="https://joseplatero.com" target="_blank" rel="noopener">See the full record</a>
+      </div>
+      <div class="proof">
+        <div><b>45+</b><span>people across four practices</span></div>
+        <div><b>9M+</b><span>members moved to a new status program</span></div>
+        <div><b>Webby</b><span>Honoree, home experience rethink</span></div>
+        <div><b>3</b><span>BrainStation certifications taught</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="light">
+  <div class="wrap">
+    <div class="shead"><span class="num">01</span><h2>Who I am</h2></div>
+    <div class="prose"><!--content:s01-who--></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="shead"><span class="num">02</span><h2>The role, read back</h2></div>
+    <div class="prose lede"><!--content:s02-role--></div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="shead"><span class="num">03</span><h2>What I would do</h2></div>
+    <div class="prose"><!--content:s03-do--></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="shead"><span class="num">04</span><h2>Assessed against your qualifications</h2></div>
+    <div class="buckets">
+      <div class="bucket">
+        <span class="tag">Direct fit</span>
+        <!--content:s04-direct-->
+      </div>
+      <div class="bucket">
+        <span class="tag">Adjacent, not identical</span>
+        <!--content:s04-adjacent-->
+      </div>
+      <div class="bucket">
+        <span class="tag">Flagged</span>
+        <!--content:s04-flagged-->
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="shead"><span class="num">05</span><h2>Your bonus question</h2></div>
+    <div class="prose"><!--content:s05-brainstation--></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="shead"><span class="num">06</span><h2>Letters</h2></div>
+    <div class="prose lede"><!--content:s06-letters--></div>
+    <div class="letters">
+      <div class="letter">
+        <blockquote>"His ability to transform complex ideas into stories people can truly connect with... AI can become a practical thinking partner rather than just another tool."</blockquote>
+        <cite><b>Beliz Kasirga</b>Data Operations &amp; Systems Analyst<br>AI Product Summit, BrainStation</cite>
+      </div>
+      <div class="letter">
+        <blockquote>"I went in expecting a breakdown of frameworks, tools, and product strategies. But instead, Jose focused on something far more foundational: People, culture change, and communication. And honestly? That hit deeper than expected."</blockquote>
+        <cite><b>Hugo Cardoso</b>Business Systems Analyst<br>BrainStation talk, home experience rethink</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="catalog">
+      <h2>joseplatero.com</h2>
+      <div class="prose"><!--content:catalog--></div>
+      <div class="btns">
+        <a class="btn btn-solid" href="https://joseplatero.com" target="_blank" rel="noopener">Open the site</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Not affiliated with, endorsed by, or authorized by Konrad. This is a personal application page built by Jose Platero for one job posting.</p>
+    <p><a href="mailto:joseplatero@gmail.com">joseplatero@gmail.com</a> · <a href="https://joseplatero.com" target="_blank" rel="noopener">joseplatero.com</a> · <a href="https://linkedin.com/in/joseplatero" target="_blank" rel="noopener">linkedin.com/in/joseplatero</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
