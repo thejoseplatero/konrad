@@ -99,6 +99,12 @@
   .shot img{width:100%;height:100%;object-fit:cover;display:block;
             transition:transform 0.6s var(--ease),filter 0.28s}
   .shot:hover img{transform:scale(1.05)}
+  /* A landscape photo in a 4:5 well loses about 47% of its width. Centre is only
+     correct when the subject is centred. In panel-mic.jpg Jose sits at the right
+     of the frame, and the default centre crop cut his face off the edge. */
+  .shot img.subject-right{object-position:78% 50%}
+  /* explicit, so "centre is fine here" is a reviewed decision, not a default */
+  .shot img.subject-center{object-position:50% 50%}
   .shot figcaption{font-size:12px;color:var(--white-dim);margin-top:12px;letter-spacing:-.01em}
   .light .shot figcaption{color:var(--ink-dim)}
 
@@ -135,9 +141,37 @@
 
   .catalog{border:1px solid var(--hair);padding:48px}
 
-  footer{color:var(--white-dim);padding:56px 0;font-size:13px;border-top:1px solid var(--hair-light)}
-  footer p{max-width:80ch;margin-bottom:10px;font-size:13px}
-  footer a{color:#fff}
+  /* footer: their own closing move, a large statement then structured columns.
+     Two 13px lines of fine print is a dead zone on a page about craft. */
+  footer{background:var(--ink);color:#fff;padding:104px 0 40px;border-top:1px solid var(--hair-light)}
+  .fend{font-size:64px;font-weight:450;line-height:1.05;letter-spacing:-.03em;max-width:14ch;margin-bottom:20px}
+  .fdek{font-size:20px;font-weight:500;letter-spacing:-.4px;color:var(--white-dim);margin-bottom:36px}
+  .fcols{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;
+         margin-top:88px;padding-top:32px;border-top:1px solid var(--hair-light)}
+  .fcol .kick{color:var(--white-dim);margin-bottom:16px}
+  .fcol ul{list-style:none}
+  .fcol li{margin-bottom:10px}
+  .fcol span{font-size:15px;color:var(--white-dim)}
+  /* link microinteraction: the arrow nudges, the label lifts, on their curve */
+  .flink{font-size:15px;color:#fff;text-decoration:none;display:inline-flex;align-items:baseline;gap:7px;
+         transition:color var(--hover) var(--ease)}
+  .flink .arw{display:inline-block;font-size:12px;color:var(--white-dim);
+              transition:transform 0.28s var(--ease),color var(--hover) var(--ease)}
+  .flink:hover{color:#fff}
+  .flink:hover .arw{transform:translate(3px,-3px);color:#fff}
+  .flink u{text-decoration:none;background-image:linear-gradient(currentColor,currentColor);
+           background-size:0% 1px;background-repeat:no-repeat;background-position:0 100%;
+           transition:background-size 0.28s var(--ease)}
+  .flink:hover u{background-size:100% 1px}
+  .fclock{font-variant-numeric:tabular-nums}
+  .fine{margin-top:56px;padding-top:24px;border-top:1px solid var(--hair-light);
+        display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .fine p{font-size:12px;color:var(--white-dim);max-width:74ch;margin:0}
+  .fmark{opacity:.5;transition:opacity var(--hover) var(--ease),transform 0.5s var(--ease)}
+  .fmark:hover{opacity:1;transform:rotate(-90deg)}
+  .fmark svg{width:20px;height:20px;display:block}
+  @media (max-width:980px){.fcols{grid-template-columns:1fr;gap:28px;margin-top:56px}}
+  @media (max-width:560px){footer{padding:64px 0 32px}.fend{font-size:36px}.fdek{font-size:17px}}
 
   /* scroll reveal, translateY like theirs */
   .rv{opacity:0;transform:translateY(28px);
@@ -219,7 +253,7 @@
       <div class="rv"><p>I run a 45+ person organization across four practices at Air Canada, Aeroplan: product, design, marketing technology, and adtech. I own conversion, engagement, and activation across web and app for one of Canada's largest loyalty programs.</p>
       <p>Before the client side I was Associate Partner at Nascent Digital, doing product and account strategy for DocuSign, TELUS, and Public Mobile, and a Product and Delivery Consultant at Rangle.io, coaching enterprise product teams at Raymond James and kiva.org. I know what the work looks like from inside a consultancy, and I know what it looks like from the seat that hires one.</p></div>
       <figure class="shot rv">
-        <img src="https://joseplatero.com/assets/photos/panel-mic.jpg"
+        <img class="subject-right" src="https://joseplatero.com/assets/photos/panel-mic.jpg"
              alt="Jose speaking on the Leaders in Design panel, co-panelists beside him"
              loading="lazy" decoding="async">
       </figure>
@@ -321,7 +355,7 @@
       <p>I am an instructor at BrainStation for the Artificial Intelligence Certification, the AI Product Management Certification, and the Product Leadership Certification, plus workshops in AI Agents, AI for Designers, and Rapid Prototyping with Figma Make. I have also presented on their stage as a featured speaker and sat on their Leaders in Design panel.</p>
       <p>So the best practices and processes in that question are ones I help write and deliver to the professionals who go on to work at firms like yours.</p></div>
       <figure class="shot rv">
-        <img src="https://joseplatero.com/assets/photos/studio.jpg"
+        <img class="subject-center" src="https://joseplatero.com/assets/photos/studio.jpg"
              alt="Jose's teaching rig: three screens running a live BrainStation AI certification lab"
              loading="lazy" decoding="async">
         <figcaption>Jose's teaching rig: three screens running a live BrainStation AI certification lab</figcaption>
@@ -361,8 +395,46 @@
 
 <footer>
   <div class="wrap">
-    <p>Not affiliated with, endorsed by, or authorized by Konrad. This is a personal application page built by Jose Platero for one job posting.</p>
-    <p><a href="mailto:joseplatero@gmail.com">joseplatero@gmail.com</a> · <a href="https://joseplatero.com" target="_blank" rel="noopener">joseplatero.com</a> · <a href="https://linkedin.com/in/joseplatero" target="_blank" rel="noopener">linkedin.com/in/joseplatero</a></p>
+    <h2 class="fend rv">Have a project for me?</h2>
+    <p class="fdek rv">I am in Toronto. Email is the fastest way in.</p>
+    <a class="btn btn-solid rv" href="mailto:joseplatero@gmail.com?subject=Senior%20Consultant%20application">Start a conversation</a>
+
+    <div class="fcols">
+      <div class="fcol rv">
+        <span class="kick">The role</span>
+        <ul>
+          <li><span>Senior Consultant</span></li>
+          <li><span>Toronto · Strategy · Hybrid</span></li>
+          <li><a class="flink" href="https://www.konrad.com/careers/job/senior-consultant_7848814003" target="_blank" rel="noopener"><u>The posting</u><span class="arw">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="fcol rv">
+        <span class="kick">Elsewhere</span>
+        <ul>
+          <li><a class="flink" href="https://joseplatero.com" target="_blank" rel="noopener"><u>joseplatero.com</u><span class="arw">↗</span></a></li>
+          <li><a class="flink" href="https://linkedin.com/in/joseplatero" target="_blank" rel="noopener"><u>LinkedIn</u><span class="arw">↗</span></a></li>
+          <li><a class="flink" href="mailto:joseplatero@gmail.com"><u>joseplatero@gmail.com</u><span class="arw">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="fcol rv">
+        <span class="kick">Local time</span>
+        <ul>
+          <li><span class="fclock">Toronto <span id="tor2">--:--</span></span></li>
+          <li><span>The same time zone as your Toronto office</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fine">
+      <p>Not affiliated with, endorsed by, or authorized by Konrad. This is a personal application page built by Jose Platero for one job posting.</p>
+      <a class="fmark" href="#top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Back to top">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24 0V6.32L15.16 15.16L6.32 24H0L12 12L24 0Z"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24 24H15.16L19.58 19.58L24 15.16V24Z"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M15.16 0L8.53 6.32L1.9 0H15.16Z"></path>
+        </svg>
+      </a>
+    </div>
   </div>
 </footer>
 
@@ -396,12 +468,12 @@
   });
 
   // Toronto clock, the same beat as their office clocks
-  var t = document.getElementById('tor');
+  var clocks = [document.getElementById('tor'), document.getElementById('tor2')];
   function tick(){
-    if (!t) return;
-    t.textContent = new Date().toLocaleTimeString('en-CA', {
+    var now = new Date().toLocaleTimeString('en-CA', {
       timeZone:'America/Toronto', hour:'numeric', minute:'2-digit', hour12:true
     });
+    clocks.forEach(function(c){ if (c) c.textContent = now; });
   }
   tick(); setInterval(tick, 10000);
 })();

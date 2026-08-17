@@ -169,12 +169,55 @@ for (const label of ['Webby Honoree', 'Teaching Product Leadership', 'Student an
   ok(`caption "${label}" is verbatim from the asset manifest`, visible.includes(label));
 }
 ok('images carry real alt text', [...html.matchAll(/<img[^>]*>/g)].every((m) => /alt="[^"]{8,}"/.test(m[0])));
+
+// Caught by eye: a 4:5 well drops ~47% of a landscape photo's width, and the
+// default centre crop cut Jose's face clean off in panel-mic.jpg. Any landscape
+// asset placed in a portrait well must declare where the subject actually is.
+const LANDSCAPE = ['panel-mic.jpg', 'pipeline-talk.jpg', 'studio.jpg'];
+const portraitWells = [...html.matchAll(/<figure class="shot[^"]*"[^>]*>([\s\S]*?)<\/figure>/g)].map((m) => m[1]);
+for (const well of portraitWells) {
+  const file = (well.match(/assets\/photos\/([a-z-]+\.jpg)/) || [])[1];
+  if (!file || !LANDSCAPE.includes(file)) continue;
+  ok(`landscape "${file}" in a 4:5 well declares its subject position`,
+    /class="[^"]*subject-(right|left|top|center)/.test(well) || /object-position/.test(well),
+    'centre crop can cut the subject out of frame');
+}
+ok('subject-position rule exists in css', /\.shot img\.subject-right\{object-position/.test(css));
 ok('reduced-motion kills animations',
   /prefers-reduced-motion:\s*reduce/.test(css) && /animation:none!important/.test(css));
 ok('reduced-motion reveals content rather than hiding it',
   /prefers-reduced-motion[\s\S]*?\.rv\{opacity:1/.test(css));
 ok('reveal script has a reduced-motion branch', /prefers-reduced-motion: reduce/.test(html));
 ok('reveal script has a no-IntersectionObserver fallback', /IntersectionObserver' in window/.test(html));
+
+/* ---------- 9c. delight surface audit ---------- */
+// "Does a curve exist somewhere" is not a standard: the first rebuild passed
+// every motion check while the footer was two lines of 13px grey text. The bar
+// is per-surface. Every surface a visitor can touch or land on gets a state.
+const surfaces = {
+  'nav mark': /\.brand:hover svg\{transform/,
+  'buttons': /\.btn\{[^}]*transition:[^}]*transform/,
+  'button hover lifts': /\.btn:hover\{transform:translateY/,
+  'section photos': /\.shot:hover img\{transform:scale/,
+  'media wells': /\.well:hover img\{transform:scale/,
+  'media well overlay label': /\.well:hover \.view\{opacity:1/,
+  'letter cards': /\.letter:hover\{border-color/,
+  'hero band': /\.band\.in img\{transform:scale\(1\)/,
+  'footer links': /\.flink:hover u\{background-size:100% 1px/,
+  'footer link arrow': /\.flink:hover \.arw\{transform:translate/,
+  'footer mark / back to top': /\.fmark:hover\{opacity:1;transform:rotate/,
+};
+for (const [name, re] of Object.entries(surfaces)) {
+  ok(`delight surface has a state: ${name}`, re.test(css));
+}
+// The footer is the classic dead zone. It gets held to the same bar as the hero.
+ok('footer carries a real closing statement, not just fine print',
+  /\.fend\{font-size:64px/.test(css) && /class="fend/.test(html));
+ok('footer has structured columns', (html.match(/class="fcol rv"/g) || []).length >= 3);
+ok('footer has its own call to action', /<footer[\s\S]*?class="btn btn-solid[\s\S]*?<\/footer>/.test(html));
+ok('footer is not the smallest type on the page by default',
+  !/footer\{[^}]*font-size:13px/.test(css));
+ok('live clock appears in nav and footer', /id="tor"/.test(html) && /id="tor2"/.test(html));
 
 /* ---------- 10. mark is custom to this company ---------- */
 // The Thomson Reuters build once shipped with the Affirm arc pasted in unchanged.
