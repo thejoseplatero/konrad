@@ -109,13 +109,19 @@ ok('no "not X but Y" construction', !/\bnot\s+\w+[^.]{0,40},\s*but\b/i.test(visi
 /* ---------- 7. disclosure rules ---------- */
 // This page goes to an external consultancy. Air Canada's consulting partners
 // appear on the private CV and must never reach it.
+// Scan the RAW html, not just visible copy. Caught in review: a source comment
+// explaining why an asset was rejected named the partner, the employer, and the
+// recipient. View-source is public; a comment is not a private note.
 for (const name of ['Thoughtworks', 'BCG', 'Boston Consulting']) {
-  ok(`"${name}" never named on a page sent to an external consultancy`,
-    !new RegExp(name, 'i').test(visible));
+  ok(`"${name}" absent from the shipped file, comments included`,
+    !new RegExp(name, 'i').test(html),
+    (html.match(new RegExp(`.{0,50}${name}.{0,50}`, 'i')) || [''])[0]);
 }
-// A text scan cannot see a logo baked into a JPEG. Caught by eye at review:
-// posters/workshop.jpg has a Thoughtworks bag and an Air Canada whiteboard in
-// frame. Any media carrying third-party branding is banned by filename here.
+ok('no source comment characterises the recipient',
+  !/rival|competitor|competing consultancy/i.test(html));
+// A text scan cannot see a logo baked into a JPEG. These two carry legible
+// third-party branding in frame, caught by eye at review. Banned by filename.
+// Reason lives in the asset manifest, which is not published.
 for (const asset of ['posters/workshop.jpg', 'behind-the-scenes/bts-1.mp4']) {
   ok(`"${asset}" not used (third-party branding visible in frame)`,
     !html.includes(asset));

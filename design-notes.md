@@ -182,22 +182,21 @@ multipliers instead.
 A text check cannot see a logo inside a photograph. Every image used here was
 opened and looked at before shipping.
 
-**Rejected: `posters/workshop.jpg` and `behind-the-scenes/bts-1.mp4` ("Design
-System Workshop").** The frame contains a Thoughtworks-branded bag on the table
-and a whiteboard reading "Reserved for AIR CANADA". This page goes to a competing
-consultancy, so that is the exact disclosure the rule below forbids, arriving as
-a picture instead of a word. Replaced with "Teaching Product Leadership"
-(`posters/teaching.jpg` + `bts-2.mp4`), which is clean and shows BRAINSTATION on
-screen, reinforcing section 05. Both rejected files are banned by filename in
-`qa.mjs`.
+**Rejected: `posters/workshop.jpg` and `behind-the-scenes/bts-1.mp4`.** Third-party
+branding is legible in frame, which the disclosure rule below forbids. A picture
+carries it the same as a sentence does, and a text scan cannot see it. Replaced
+with "Teaching Product Leadership" (`posters/teaching.jpg` + `bts-2.mp4`), which is
+clean and reinforces section 05. Both rejected files are banned by filename in
+`qa.mjs`. The full reason is recorded in the asset manifest, not here.
 
 Cleared by eye: `pipeline-talk.jpg` (his own pipeline diagram on screen),
 `panel-mic.jpg`, `studio.jpg` (a BrainStation "Lab: Claude Skills" session),
 `webby.jpg` (the Air Canada homepage he shipped), `why-i-teach.jpg`.
 
-**Air Canada's external consulting partners (BCG, Thoughtworks) are never named.**
-They appear on the private CV. This page goes to an external consultancy and
-naming them here would be a disclosure problem. Encoded as a failing QA test.
+**Current-employer partner and vendor names are never used.** They appear on the
+private CV and do not belong on a page that leaves the building. Enforced as a
+failing QA test that scans the whole shipped file, comments included, not just
+visible copy. Keep the reason short here; a public repo is not a private note.
 
 Two real quotes from `people/mentions.md`, with name, title, and context, never
 trimmed into saying something they did not say.
