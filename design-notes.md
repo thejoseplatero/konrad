@@ -6,6 +6,17 @@ contradicts this file, the file wins or the file gets updated first.
 Built by the `target-employer` skill, 2026-08-17.
 Posting: https://www.konrad.com/careers/job/senior-consultant_7848814003
 
+## Scan history
+
+**Pass 1 (job page only) was wrong and produced a text-only page.** The posting at
+`/careers/job/...` is the plainest page Konrad owns: 48px H1, flat columns, no
+imagery, no motion. Building from it alone shipped something technically on-brand
+and visibly dead.
+
+**Pass 2 (2026-08-17) walked konrad.com, /work, and a case study.** Findings below
+supersede pass 1 wherever they conflict. The job-page numbers are kept only as a
+record of what a stripped template page looks like.
+
 ## Measured brand tokens
 
 Captured in-browser from the live job page via computed styles.
@@ -32,9 +43,78 @@ and white with no accent color anywhere.
 "We help the world's top businesses and brands succeed in the AI era." Short
 sentence, concrete claim, full stop.
 
-**Constraint that follows from all of this:** a loud page reads as off-brand here.
-No accent colors, no gradients, no bold weights. Confidence is carried by space
-and restraint. Resist every instinct to add emphasis.
+**Constraint that follows from all of this:** no accent colors, no gradients, no
+bold weights. Confidence is carried by space and restraint.
+
+Restraint in *color and weight* is not the same as restraint in *motion and media*.
+Pass 2 found the opposite there. See below.
+
+## Pass 2: the real site (konrad.com, /work, /work/spotify)
+
+The homepage is **10,515px tall**. The work index H1 is **140px**. The job page's
+48px hero is a stripped template, not the brand.
+
+### Motion system, measured
+
+| Token | Value |
+|---|---|
+| Signature easing | `cubic-bezier(0.22, 1, 0.36, 1)` — 100 declarations, easily dominant |
+| Secondary easing | `cubic-bezier(0.16, 1, 0.3, 1)` — 32 declarations |
+| Hover duration | `0.12s` — 55 declarations, the single most common |
+| Reveal durations | `0.28s`, `0.3s`, `0.4s`, `0.45s`, `0.5s` |
+| Card media hover | `transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.28s` |
+| Logo marquee | `@keyframes logo-marquee` → `translateX(calc(-100% / var(--logo-copies)))`, `60s linear infinite` |
+| Scroll reveals | `translateY` offsets (43px, 61px, 64px, 101px observed mid-scroll) |
+
+**One curve carries the whole site.** Use `cubic-bezier(0.22, 1, 0.36, 1)` for
+everything, 0.12s on hover, 0.3s to 0.5s on reveal. Mixing curves is off-brand.
+
+### Media, measured
+
+- **Hero:** `homepage-hero.webm`, autoplay + loop + muted, full bleed 1440×810
+- **Case cards:** 437×546, ratio **0.80 (4:5 portrait)**, `object-fit: cover`,
+  **0px radius**
+- **Idle-to-hover video swap per card:** `soulcycle-equinox-idle-mobile.webm`,
+  `spotify-hover.webm`, `hp-hover-mobile.webm`, `kia-hover-mobile.webm`
+- **99 images** on the homepage, including a photo strip at 201×235 `cover`
+- Large media wells run ratio 0.62 (446×721), `overflow: hidden` on the well
+
+**The system's core tension: every image and video is 0px radius, every button is a
+100px pill.** Sharp media, round controls. Flattening either loses the brand.
+
+### Type scale, real ceiling
+
+| Use | Value |
+|---|---|
+| Section landing H1 | `140px / 450 / -4.2px` ("Our Work") |
+| Display | `86.4px / 400 / -2.592px` ("Innovation with Intelligence™") |
+| Large heading | `64px / 450 / -1.92px` ("Have a Project for Us?") |
+| Body-lead | `52px / 450 / -1.56px` |
+| Section heading | `28px / 450 / -0.56px` |
+| Body | `18px / 400` and `16px / 400` |
+| Eyebrow label | `12px / 550 / uppercase` ("VIEW CASE", "CAPABILITIES") |
+| Meta label | `12px / 400 / ls 0.5px` ("TORONTO", "NEW YORK") |
+
+Letter-spacing is consistently about `-0.03em` at display sizes.
+
+### Signature components worth borrowing
+
+- **Live world clocks in the nav:** "NYC 12:26 PM · TOR 12:26 PM · LDN 5:26 PM"
+- **Numbered eyebrows:** `(01) — CULTURE`, `(02) — CRAFT`, and a `01 / 05` counter
+- **Uppercase section kickers:** WHO WE ARE, HIGHLIGHTED CASE STUDIES, OUR CLIENTS
+- **Infinite client-logo marquee**
+- Tagline lockup: "Innovation with Intelligence™"
+
+### What this means for the page
+
+The current build has zero motion, zero images, zero video, and a 48px hero. That
+is not a restrained interpretation of this brand, it is a different brand. The
+rebuild needs, at minimum: the signature curve on every interactive element, a
+scroll-reveal pattern, real media in fixed 4:5 sharp-cornered wells, a marquee or
+ticker, and a display heading in the 86px to 140px range.
+
+All motion added must be wrapped in `prefers-reduced-motion: reduce`, and any
+video needs a poster frame.
 
 ## Phase 0.5 — the candidate's mark
 
